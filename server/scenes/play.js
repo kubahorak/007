@@ -34,16 +34,6 @@ class PlayScene extends Scene {
         const player = this.players[channelID]
         player.lives += plusLives
         player.bullets += plusBullets
-
-        if (player.lives < 1) {
-            player.channel.emit("game_over", { result: "lose" })
-            for (let otherChannelID in this.players) {
-                if (otherChannelID === channelID) {
-                    continue
-                }
-                this.players[otherChannelID].channel.emit("game_over", { result: "win" })
-            }
-        }
     }
 
     resolve(a, b) {
@@ -92,6 +82,32 @@ class PlayScene extends Scene {
             this.addLivesAndBullets(b.channelID, -1, 0)
             this.send(a.channelID, "win", "die")
             this.send(b.channelID, "die", "win")
+        }
+
+        this.handleGameOver()
+    }
+
+    handleGameOver() {
+        let isGameOver = false
+        for (let channelID in this.players) {
+            const player = this.players[channelID]
+
+            if (player.lives < 1) {
+                isGameOver = true
+                break
+            }
+        }
+
+        if (isGameOver) {
+            for (let channelID in this.players) {
+                const player = this.players[channelID]
+
+                if (player.lives < 1) {
+                    player.channel.emit("game_over", {result: "lose"})
+                } else {
+                    player.channel.emit("game_over", {result: "win"})
+                }
+            }
         }
     }
 

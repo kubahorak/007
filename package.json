@@ -23,6 +23,11 @@
   "devDependencies": {
     "nodemon": "^2.0.3",
     "npm-run-all": "^4.1.5",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.5.0"
+  },
+  "staticFiles": {
+    "staticPath": "client/assets",
+    "watcherGlob": "**"
   }
 }

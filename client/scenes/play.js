@@ -10,17 +10,24 @@ export default class PlayScene extends Scene {
     }
 
     preload() {
-        this.load.setBaseURL('http://labs.phaser.io');
+        this.load.audio('shoot', 'audio/shoot.mp3')
+        this.load.audio('reload', 'audio/reload.mp3')
+        this.load.audio('defend', 'audio/defend.mp3')
+        this.load.audio('die', 'audio/die.mp3')
+        this.load.audio('win', 'audio/win.mp3')
 
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+        // online resources
+        this.load.image('sky', 'http://labs.phaser.io/assets/skies/space3.png');
+        this.load.image('muzzleflash2', 'http://labs.phaser.io/assets/particles/muzzleflash2.png');
+        this.load.bitmapFont('azo-fire', 'http://labs.phaser.io/assets/fonts/bitmap/azo-fire.png', 'http://labs.phaser.io/assets/fonts/bitmap/azo-fire.xml');
+        this.load.bitmapFont('clarendon', 'http://labs.phaser.io/assets/fonts/bitmap/clarendon.png', 'http://labs.phaser.io/assets/fonts/bitmap/clarendon.xml');
+
     }
 
     async create() {
         this.add.image(400, 400, 'sky');
 
-        const particles = this.add.particles('red');
+        const particles = this.add.particles('muzzleflash2');
 
         this.emitter = particles.createEmitter({
             speed: 100,
@@ -28,16 +35,18 @@ export default class PlayScene extends Scene {
             blendMode: 'ADD'
         });
 
-        this.statusText = this.add.text(50, 100, 'Press a button!');
-        this.overallText = this.add.text(50, 150, 'You have 3 lives, 0 bullets loaded');
+        this.add.dynamicBitmapText(170, 10, 'azo-fire', '007', 50);
 
-        this.shootButton = this.add.text(100, 300, '', { fill: '#0f0' })
+        this.statusText = this.add.dynamicBitmapText(50, 100, 'clarendon', 'Press a button!', 18);
+        this.overallText = this.add.dynamicBitmapText(50, 150, 'clarendon', 'You have 3 lives, 0 bullets loaded', 18);
+
+        this.shootButton = this.add.dynamicBitmapText(100, 300, 'clarendon', '', 30)
             .setInteractive()
             .on('pointerdown', () => this.trigger(this.shootButton, 'shoot') );
-        const defendButton = this.add.text(100, 400, 'Defend', { fill: '#0f0' })
+        const defendButton = this.add.dynamicBitmapText(100, 400, 'clarendon', 'Defend', 30)
             .setInteractive()
             .on('pointerdown', () => this.trigger(defendButton, 'defend') );
-        const reloadButton = this.add.text(100, 500, 'Reload', { fill: '#0f0' })
+        const reloadButton = this.add.dynamicBitmapText(100, 500, 'clarendon', 'Reload', 30)
             .setInteractive()
             .on('pointerdown', () => this.trigger(reloadButton, 'reload') );
 
@@ -45,6 +54,7 @@ export default class PlayScene extends Scene {
             console.log('resolution', resolution)
             this.statusText.setText(`You ${resolution.you}, your opponent ${resolution.opponent}s`)
             this.overallText.setText(`You have ${resolution.lives} lives, ${resolution.bullets} bullets loaded`)
+            this.sound.play(resolution.you)
             if (resolution.bullets < 1) {
                 this.shootButton.setText('')
             } else {
