@@ -10,7 +10,7 @@
     "server:serve": "nodemon server/server.js"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.11.5",
+    "@babel/polyfill": "^7.12.1",
     "@geckos.io/client": "^1.5.0",
     "@geckos.io/phaser-on-nodejs": "^1.2.3",
     "@geckos.io/server": "^1.5.0",
