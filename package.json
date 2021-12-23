@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/polyfill": "7.12.1",
     "@geckos.io/client": "2.1.2",
-    "@geckos.io/phaser-on-nodejs": "1.2.5",
+    "@geckos.io/phaser-on-nodejs": "1.2.6",
     "@geckos.io/server": "2.1.2",
     "babel-polyfill": "6.26.0",
     "compression": "1.7.4",
